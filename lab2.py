@@ -86,7 +86,7 @@ P = buidP(data)
 alpha = solve_qp(P)
 
 # Map the alpha values to their corresponding data points
-data_alpha = zip(data_points, alpha)
+data_alpha = zip(alpha, data_points) 
 
 # Sort out the positive using TRESHOLD
 positive_alpha = [(x, a) for (x, a) in data_alpha if a > TRESHOLD]
