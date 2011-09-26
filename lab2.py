@@ -1,7 +1,10 @@
 #!/usr/bin/env python
-import random
-import pprint
-from cvxopt import matrix
+from cvxopt.base import matrix
+from cvxopt.solver import qp
+
+import random, math, numpy, pprint, matlibplot
+
+def TRESHOLD = math.pow(10, -5)
 
 def generate_data():
 	classA = [ ( random.normalvariate(1.5,1) ,
@@ -20,6 +23,32 @@ def generate_data():
 	data = classA + classB
 	random.shuffle(data)
 	return data
+
+def solve_qp(P):
+	"INPUT is a matrix P with dim NxN"
+	"RETURN alpha that max/min? shiiiiit"
+	N = len(data_set)
+	q = numpy.array([x for 1 in range(N)])
+	h = numpy.array([x for 0 in range(N)])
+	G = -identity(N)
+	def identity(n):
+		"INPUT integer n"
+    	"RETURN identity matrix of size n"
+	    I = matrix(0.0, (n, n))
+	    I[::n+1] = 1.0
+	    return I
+	
+	#r = qp(matrix(P), matrix(q), matrix(G), matrix(h))
+	#alpha = list(r['x'])
+	#return alpha
+
+def indicator_function(new_dp):
+	"INPUT the data point to be classified"
+	"RETURN true iff correctly classified"
+	def evaluate(a, dp, new_dp):
+		"INPUT alpha value a, data point dp"
+		"RETURN value"
+		return a*
 
 def linear_kernel(x,y):
 	res = matrix(x).trans() * matrix(y) + 1
