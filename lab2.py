@@ -38,6 +38,10 @@ def solve_qp(P):
 	q = numpy.array([1 for x in range(N)])
 	h = numpy.array([0 for x in range(N)])
 	G = -identity(N)
+	print "N = ", len(P)
+	print "matrix(q).size = ", matrix(q).size
+	print "matrix(h).T.size = ", matrix(h).T.size
+	print "matrix(G).size = ", matrix(G).size
 
 	r = qp(matrix(P), matrix(q), matrix(G), matrix(h))
 	alpha = list(r['x'])
