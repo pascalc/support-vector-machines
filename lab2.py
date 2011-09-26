@@ -42,8 +42,14 @@ def solve_qp(P):
 	print "matrix(q).size = ", matrix(q).size
 	print "matrix(h).T.size = ", matrix(h).T.size
 	print "matrix(G).size = ", matrix(G).size
+	print "matrix(P).size = ", matrix(P).size
 
-	r = qp(matrix(P), matrix(q), matrix(G), matrix(h))
+	print matrix(q)
+	print matrix(h).T
+	print matrix(G)
+	print matrix(P)
+
+	r = qp(matrix(P), matrix(q), matrix(G), matrix(h).T)
 	alpha = list(r['x'])
 	return alpha
 
@@ -95,6 +101,7 @@ alpha = solve_qp(P)
 
 # Sort out the positive using TRESHOLD
 #positive_alpha = [(x, a) for (x, a) in data_alpha if a > TRESHOLD]
+# positive_alpha = filter(lambda x: x > TRESHOLD, data_alpha)
 
 # Classify a new data point using the indicator function
 # indicators(new_dp, positive_alpha)
