@@ -42,13 +42,16 @@ def solve_qp(P):
 	#alpha = list(r['x'])
 	#return alpha
 
-def indicator_function(new_dp):
-	"INPUT the data point to be classified"
+def indicator_function(new_dp, alpha):
+	"INPUT the data point to be classified and non-zero alpha values with ther data point"
 	"RETURN true iff correctly classified"
-	def evaluate(a, dp, new_dp):
-		"INPUT alpha value a, data point dp"
-		"RETURN value"
-		return a*
+	def evaluate(a, i, x_, x):
+		return a*i*linear_kernel(x_, x)
+	value = 0;
+	for (a, dp) in alpha:
+		value += evaluate(a, dp[2], new_dp, dp)
+	
+	return value
 
 def linear_kernel(x,y):
 	res = matrix(x).trans() * matrix(y) + 1
