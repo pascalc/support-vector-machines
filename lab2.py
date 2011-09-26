@@ -27,7 +27,7 @@ def generate_data():
 def solve_qp(P):
 	"INPUT is a matrix P with dim NxN"
 	"RETURN alpha that max/min? shiiiiit"
-	N = len(data_set)
+	N = len(P)
 	q = numpy.array([x for 1 in range(N)])
 	h = numpy.array([x for 0 in range(N)])
 	G = -identity(N)
@@ -43,7 +43,7 @@ def solve_qp(P):
 	#return alpha
 
 def indicator_function(new_dp, alpha):
-	"INPUT the data point to be classified and non-zero alpha values with ther data point"
+	"INPUT the data point to be classified and non-zero alpha values with corresponding data point"
 	"RETURN true iff correctly classified"
 	def evaluate(a, i, x_, x):
 		return a*i*linear_kernel(x_, x)
@@ -76,7 +76,24 @@ def printMatrix(matrix):
 			print matrix[i][j]
 		print
 
+# Generate the test data
 data = generate_data()
+
+# Build the matrix P according to P(i,j) = t(i)*t(j)*K(x(i), x(j)) where K is kernel function
+P = buidP(data)
+
+# Solve the quadractic problem
+alpha = solve_qp(P)
+
+# Map the alpha values to their corresponding data points
+data_alpha = zip(data_points, alpha)
+
+# Sort out the positive using TRESHOLD
+positive_alpha = [(x, a) for (x, a) in data_alpha if a > TRESHOLD]
+
+# Classify a new data point using the indicator function
+# indicators(new_dp, positive_alpha)
+
 print data
 pp = pprint.PrettyPrinter(depth=2)
 pp.pprint(map(repr,buildP(data)))
