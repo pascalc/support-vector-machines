@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 from cvxopt.base import matrix
-from cvxopt.solver import qp
+from cvxopt.solvers import qp
 
-import random, math, numpy, pprint, matlibplot
+import random, math, numpy, pprint, matplotlib
 
-def TRESHOLD = math.pow(10, -5)
+TRESHOLD = math.pow(10, -5)
 
 def generate_data():
 	classA = [ ( random.normalvariate(1.5,1) ,
@@ -27,20 +27,21 @@ def generate_data():
 def solve_qp(P):
 	"INPUT is a matrix P with dim NxN"
 	"RETURN alpha that max/min? shiiiiit"
-	N = len(P)
-	q = numpy.array([x for 1 in range(N)])
-	h = numpy.array([x for 0 in range(N)])
-	G = -identity(N)
 	def identity(n):
 		"INPUT integer n"
-    	"RETURN identity matrix of size n"
-	    I = matrix(0.0, (n, n))
-	    I[::n+1] = 1.0
-	    return I
+		"RETURN identity matrix of size n"
+		I = matrix(0.0, (n, n))
+		I[::n+1] = 1.0
+		return I
 	
-	#r = qp(matrix(P), matrix(q), matrix(G), matrix(h))
-	#alpha = list(r['x'])
-	#return alpha
+	N = len(P)
+	q = numpy.array([1 for x in range(N)])
+	h = numpy.array([0 for x in range(N)])
+	G = -identity(N)
+
+	r = qp(matrix(P), matrix(q), matrix(G), matrix(h))
+	alpha = list(r['x'])
+	return alpha
 
 def indicator_function(new_dp, alpha):
 	"INPUT the data point to be classified and non-zero alpha values with corresponding data point"
@@ -80,20 +81,20 @@ def printMatrix(matrix):
 data = generate_data()
 
 # Build the matrix P according to P(i,j) = t(i)*t(j)*K(x(i), x(j)) where K is kernel function
-P = buidP(data)
+P = buildP(data)
 
 # Solve the quadractic problem
 alpha = solve_qp(P)
 
 # Map the alpha values to their corresponding data points
-data_alpha = zip(alpha, data_points) 
+#data_alpha = zip(alpha, data) 
 
 # Sort out the positive using TRESHOLD
-positive_alpha = [(x, a) for (x, a) in data_alpha if a > TRESHOLD]
+#positive_alpha = [(x, a) for (x, a) in data_alpha if a > TRESHOLD]
 
 # Classify a new data point using the indicator function
 # indicators(new_dp, positive_alpha)
 
-print data
-pp = pprint.PrettyPrinter(depth=2)
-pp.pprint(map(repr,buildP(data)))
+#print data
+#pp = pprint.PrettyPrinter(depth=2)
+#pp.pprint(map(repr,buildP(data)))
