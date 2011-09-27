@@ -4,7 +4,7 @@ from cvxopt.solvers import qp
 
 import random, math, numpy, pprint, matplotlib
 
-TRESHOLD = math.pow(10, -5)
+TRESHOLD = math.pow(10, -9)
 
 def generate_data():
 	classA = [ ( random.normalvariate(1.5,1) ,
@@ -35,21 +35,22 @@ def solve_qp(P):
 		return I
 	
 	N = len(P)
-	q = numpy.array([1 for x in range(N)])
-	h = numpy.array([0 for x in range(N)])
+	q = numpy.ones(N)
+	h = numpy.zeros(N)
+	numpy.transpose(h)
 	G = -identity(N)
 	print "N = ", len(P)
 	print "matrix(q).size = ", matrix(q).size
-	print "matrix(h).T.size = ", matrix(h).T.size
+	print "matrix(h).size = ", matrix(h).size
 	print "matrix(G).size = ", matrix(G).size
 	print "matrix(P).size = ", matrix(P).size
 
 	print matrix(q)
-	print matrix(h).T
+	print matrix(h)
 	print matrix(G)
 	print matrix(P)
 
-	r = qp(matrix(P), matrix(q), matrix(G), matrix(h).T)
+	r = qp(matrix(P), matrix(q), matrix(G), matrix(h))
 	alpha = list(r['x'])
 	return alpha
 
@@ -60,13 +61,28 @@ def indicator_function(new_dp, alpha):
 		return a*i*linear_kernel(x_, x)
 	value = 0;
 	for (a, dp) in alpha:
-		value += evaluate(a, dp[2], new_dp, dp)
+		indicator = dp[2]
+		point = (dp[0], dp[1])
+		value += evaluate(a, indicator, new_dp, point)
 	
 	return value
 
 def linear_kernel(x,y):
 	res = matrix(x).trans() * matrix(y) + 1
 	return res[0]
+
+def radial_basis_kernel(x, y, sigma):
+	def sub_vector(x, y):
+		#z = ((x[0] - y[0]), (x[1] - y[1])
+		z = matrix(x) - matrix(y)
+
+		return z[0]
+	
+	enumerator = math.pow(sub_vector(x, y))
+	denumerator = math.pow(sigma, 2)
+	K = math.exp(enumerator / denumerator)
+
+	return K
 
 def buildP(raw_data):
 	P = []
@@ -96,15 +112,23 @@ P = buildP(data)
 # Solve the quadractic problem
 alpha = solve_qp(P)
 
+print "alpha = ", alpha
+
 # Map the alpha values to their corresponding data points
-#data_alpha = zip(alpha, data) 
+#points = [(x, y) for (x,y,z) in data]
+data_alpha = zip(alpha, data) 
+print data_alpha
 
 # Sort out the positive using TRESHOLD
-#positive_alpha = [(x, a) for (x, a) in data_alpha if a > TRESHOLD]
-# positive_alpha = filter(lambda x: x > TRESHOLD, data_alpha)
+positive_alpha = filter(lambda x: x[0] >= TRESHOLD, data_alpha)
+print "TRESHOLD = ", TRESHOLD
+print "Positive alpha\n", str(positive_alpha)
 
+new_dp = (random.normalvariate(1, 0.5),  random.normalvariate(2, 0.25))
 # Classify a new data point using the indicator function
-# indicators(new_dp, positive_alpha)
+value = indicator_function(new_dp, positive_alpha)
+
+print value
 
 #print data
 #pp = pprint.PrettyPrinter(depth=2)
