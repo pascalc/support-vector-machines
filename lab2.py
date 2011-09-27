@@ -35,22 +35,22 @@ def solve_qp(P):
 		return I
 	
 	N = len(P)
-	q = numpy.ones( ( N, 1 ) )
-	h = numpy.zeros( ( N, 1 ) )
+	q = numpy.ones((N,1))*(-1)
+	h = numpy.zeros((N,1))
 	#q = numpy.ones((N, 1))*-1
 	#h = numpy.zeros((N, 1))
 	numpy.transpose(h)
 	G = -identity(N)
-	print "N = ", len(P)
-	print "matrix(q).size = ", matrix(q).size
-	print "matrix(h).size = ", matrix(h).size
-	print "matrix(G).size = ", matrix(G).size
-	print "matrix(P).size = ", matrix(P).size
+	# print "N = ", len(P)
+	# print "matrix(q).size = ", matrix(q).size
+	# print "matrix(h).size = ", matrix(h).size
+	# print "matrix(G).size = ", matrix(G).size
+	# print "matrix(P).size = ", matrix(P).size
 
-	print matrix(q)
-	print matrix(h)
-	print matrix(G)
-	print matrix(P)
+	# print matrix(q)
+	# print matrix(h)
+	# print matrix(G)
+	# print matrix(P)
 
 	r = qp(matrix(P), matrix(q), matrix(G), matrix(h))
 	alpha = list(r['x'])
@@ -115,17 +115,15 @@ P = buildP(test_data)
 # Solve the quadractic problem
 alpha = solve_qp(P)
 
-print "alpha = ", alpha
+print "\nalpha = ", str(alpha)
 
 # Map the alpha values to their corresponding data points
-#points = [(x, y) for (x,y,z) in data]
 data_alpha = zip(alpha, data) 
-print data_alpha
+print "\nAlpha values with corresponding points\n", str(data_alpha)
 
 # Sort out the positive using TRESHOLD
 positive_alpha = filter(lambda x: x[0] >= TRESHOLD, data_alpha)
-print "TRESHOLD = ", TRESHOLD
-print "Positive alpha\n", str(positive_alpha)
+print "\nPositive alpha\n", str(positive_alpha)
 
 new_dp = (random.normalvariate(1, 0.5),  random.normalvariate(2, 0.25))
 verification = test.verify1()
