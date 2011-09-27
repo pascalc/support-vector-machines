@@ -112,8 +112,8 @@ def printMatrix(matrix):
 classA = data.classA
 classB = data.classB
 
-#plot(classA, classB)
-plot(data.above_x, data.below_x)
+#plot_points(classA, classB)
+plot_points(data.above_x, data.below_x)
 
 # Generate the test data
 data = classA + classB
