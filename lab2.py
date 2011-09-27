@@ -7,21 +7,7 @@ import test, data
 
 TRESHOLD = math.pow(10, -5)
 
-def plot(classA, classB):
-	# classA = [ ( random.normalvariate(1.5,1) ,
-	# 			  random.normalvariate(0.5,1),
-	# 			1.0)
-	# 		  for i in range(5) ] + \
-	# 		[ ( random.normalvariate(1.5,1),
-	# 			random.normalvariate(0.5,1),
-	# 		  1.0)
-	# 		for i in range(5)]
-
-	# classB = [ (random.normalvariate(0.0,0.5) ,
-	# 			random.normalvariate(0.5,0.5) ,
-	# 			-1.0)
-	# 		for i in range(10) ]
-	
+def plot_points(classA, classB):
 	pylab.hold(True)
 	pylab.plot([p[0] for p in classA],
 		[p[1]for p in classA],
@@ -30,6 +16,17 @@ def plot(classA, classB):
 		[p[1]for p in classB],
 	'ro')
 	pylab.show()
+
+def plot_decision_boundary(x, alpha_list):
+	x_range = numpy.arange(-4, 4, 0.05)
+	y_range = numpy.arange(-4, 4, 0.05)
+	grid = matrix([ [indicator_function(x, y)
+		for y in y_range]
+		for x in x_range])
+	pylab.contour(x_range, y_range, grid,
+		(-1.0, 0.0, 1.0),
+		colors=('red',' black', 'blue'),
+		leninewidths=(1,3,1))
 
 def solve_qp(P):
 	"INPUT is a matrix P with dim NxN"
