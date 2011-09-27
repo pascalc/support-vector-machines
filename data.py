@@ -16,18 +16,34 @@ classB = [ (random.normalvariate(0.0,0.5) ,
 			-1.0)
 		for i in range(10) ]
 
-data = classA + classB
-random.shuffle(data)
-
 points1 = [ (random.normalvariate(1, 0.5),
-				random.normalvariate(1.5, 0.5)
-			)
+				random.normalvariate(1.5, 0.5), 
+				1)
 			for i in range(50) ]
 
 points2 = [ (random.normalvariate(2, 1.5),
-				random.normalvariate(0.5, 2)
-			)
+				random.normalvariate(0.5, 2),
+				1.0)
 			for i in range(50) ]
 
-points3 = points1 + points2
-random.shuffle(points3)
+pos_pos_x = [ (random.normalvariate(5, 4), 
+				random.normalvariate(4, 2), 
+				1) 
+			for x in range(10)]
+pos_neg_x = [ (random.normalvariate(-5, 4),
+				random.normalvariate(4, 2),
+				1) 
+			for x in range(10)]
+
+above_x = pos_pos_x + pos_neg_x
+
+neg_pos_x = [ (random.normalvariate(5, 4), 
+				random.normalvariate(-4, 2),
+				-1) 
+			for x in range(10)]
+neg_neg_x = [ (random.normalvariate(-5, 4),
+				random.normalvariate(-4, 2),
+				-1) 
+			for x in range(10)]
+
+below_x = neg_neg_x + neg_pos_x

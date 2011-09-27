@@ -2,27 +2,34 @@
 from cvxopt.base import matrix
 from cvxopt.solvers import qp
 
-import random, math, numpy, pprint, matplotlib, test
+import random, math, numpy, pprint, matplotlib, pylab
+import test, data
 
-TRESHOLD = math.pow(10, -9)
+TRESHOLD = math.pow(10, -5)
 
-def generate_data():
-	classA = [ ( random.normalvariate(1.5,1) ,
-				  random.normalvariate(0.5,1),
-				1.0)
-			  for i in range(5) ] + \
-			[ ( random.normalvariate(1.5,1),
-				random.normalvariate(0.5,1),
-			  1.0)
-			for i in range(5)]
+def plot(classA, classB):
+	# classA = [ ( random.normalvariate(1.5,1) ,
+	# 			  random.normalvariate(0.5,1),
+	# 			1.0)
+	# 		  for i in range(5) ] + \
+	# 		[ ( random.normalvariate(1.5,1),
+	# 			random.normalvariate(0.5,1),
+	# 		  1.0)
+	# 		for i in range(5)]
 
-	classB = [ (random.normalvariate(0.0,0.5) ,
-				random.normalvariate(0.5,0.5) ,
-				-1.0)
-			for i in range(10) ]
-	data = classA + classB
-	random.shuffle(data)
-	return data
+	# classB = [ (random.normalvariate(0.0,0.5) ,
+	# 			random.normalvariate(0.5,0.5) ,
+	# 			-1.0)
+	# 		for i in range(10) ]
+	
+	pylab.hold(True)
+	pylab.plot([p[0] for p in classA],
+		[p[1]for p in classA],
+	'bo')
+	pylab.plot([p[0] for p in classB],
+		[p[1]for p in classB],
+	'ro')
+	pylab.show()
 
 def solve_qp(P):
 	"INPUT is a matrix P with dim NxN"
@@ -105,8 +112,15 @@ def printMatrix(matrix):
 			print matrix[i][j]
 		print
 
+classA = data.classA
+classB = data.classB
+
+#plot(classA, classB)
+plot(data.above_x, data.below_x)
+
 # Generate the test data
-data = generate_data()
+data = classA + classB
+random.shuffle(data)
 
 # Build the matrix P according to P(i,j) = t(i)*t(j)*K(x(i), x(j)) where K is kernel function
 test_data = test.test1()
