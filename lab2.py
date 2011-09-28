@@ -5,7 +5,7 @@ from cvxopt.solvers import qp
 import random, math, numpy, pprint, matplotlib, pylab
 import test, data
 
-TRESHOLD = math.pow(10, -5)
+THRESHOLD = math.pow(10, -5)
 
 def plot_points(classA, classB):
 	pylab.hold(True)
@@ -90,7 +90,7 @@ def radial_basis_kernel(x, y, sigma):
 
 	return K
 
-def buildP(raw_data):
+def buildP(raw_data, kernel_function):
 	P = []
 	data = map(lambda r: (r[0],r[1]), raw_data)
 	indicators = map(lambda r: r[2], raw_data)
@@ -99,7 +99,7 @@ def buildP(raw_data):
 		row = []
 		for j in range(len(data)):
 			y = data[j]
-			row += [indicators[i]*indicators[j]*linear_kernel(x,y)]
+			row += [indicators[i]*indicators[j]*kernel_function(x,y)]
 		P += [row]
 	return P
 	
@@ -121,7 +121,7 @@ random.shuffle(data)
 
 # Build the matrix P according to P(i,j) = t(i)*t(j)*K(x(i), x(j)) where K is kernel function
 test_data = test.test1()
-P = buildP(test_data)
+P = buildP(test_data, linear_kernel)
 
 # Solve the quadractic problem
 alpha = solve_qp(P)
@@ -132,8 +132,8 @@ print "\nalpha = ", str(alpha)
 data_alpha = zip(alpha, data) 
 print "\nAlpha values with corresponding points\n", str(data_alpha)
 
-# Sort out the positive using TRESHOLD
-positive_alpha = filter(lambda x: x[0] >= TRESHOLD, data_alpha)
+# Sort out the positive using THRESHOLD
+positive_alpha = filter(lambda x: x[0] >= THRESHOLD, data_alpha)
 print "\nPositive alpha\n", str(positive_alpha)
 
 new_dp = (random.normalvariate(1, 0.5),  random.normalvariate(2, 0.25))
