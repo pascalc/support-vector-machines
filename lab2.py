@@ -60,16 +60,17 @@ def solve_qp(P):
 	alpha = list(r['x'])
 	return alpha
 
-def indicator_function(new_dp, alpha_list):
+def indicator_function(new_dp, alpha_list, kernel_function):
 	"INPUT the data point to be classified and non-zero alpha values with corresponding data point"
 	"RETURN true iff correctly classified"
-	def evaluate(a, i, x_, x):
-		return a*i*linear_kernel(x_, x)
+	# def evaluate(a, i, x_, x):
+	# 	return a*i*kernel_function(x_, x)
 	value = 0;
 	for (a, dp) in alpha_list:
 		indicator = dp[2]
 		point = (dp[0], dp[1])
-		value += evaluate(a, indicator, new_dp, point)
+		#value += evaluate(a, indicator, new_dp, point)
+		value += a*indicator*kernel_function(new_dp,point)
 	
 	return value
 
@@ -139,7 +140,7 @@ print "\nPositive alpha\n", str(positive_alpha)
 new_dp = (random.normalvariate(1, 0.5),  random.normalvariate(2, 0.25))
 verification = test.verify1()
 # Classify a new data point using the indicator function
-value = indicator_function(new_dp, positive_alpha)
+value = indicator_function(new_dp, positive_alpha, linear_kernel)
 
 pos_list = []
 for p in verification[0]:
