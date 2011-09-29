@@ -1,0 +1,7 @@
+An implementation of support vector machines in python
+
+** Radial basis kernel
+The performance relies on the value chosen for sigma. To chose the optimum sigma that gives the best division of the data set one can implement a cross validation check, a method derived from statistics. 
+
+http://en.wikipedia.org/wiki/Support_vector_machine see section Properties
+http://en.wikipedia.org/wiki/Cross-validation_%28statistics%29
