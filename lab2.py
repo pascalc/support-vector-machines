@@ -44,13 +44,16 @@ def linearKernel(x,y):
 	return res[0]
 
 def radialBasisKernel(x, y):
-	sigma = 10
+	#Deterine a good value for sigma
+	#http://en.wikipedia.org/wiki/Support_vector_machine#Properties
+	#http://en.wikipedia.org/wiki/Cross-validation_%28statistics%29
+	sigma = math.pow(2, 6)
 	def sub_vector(x, y):
 		z = matrix(x) - matrix(y)
 		return z[0]
 	
 	enumerator = math.pow(sub_vector(x, y), 2)
-	denominator = math.pow(sigma, 2)
+	denominator = 2*math.pow(sigma, 2)
 	K = math.exp((-1)*(enumerator / denominator))
 
 	return K
