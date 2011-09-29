@@ -81,7 +81,7 @@ def main(test):
 	classify = test.classify
 
 	kernel = linearKernel
-	kernel = radialBasisKernel
+	#kernel = radialBasisKernel
 
 	P = buildP(data, kernel)
 
@@ -111,4 +111,4 @@ def main(test):
 
 	test.plotData()
 	test.plotPositiveAlpha(positive_alpha)
-	#test.plotDecisionBoundary(indicatorFunction, kernel)
+	test.plotDecisionBoundary(indicatorFunction, kernel, positive_alpha)

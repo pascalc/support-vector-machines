@@ -27,10 +27,10 @@ class TestClass:
 		pylab.hold(True)
 		pylab.plot([p[0] for p in self.positive],
 			[p[1]for p in self.positive],
-		'bo')
+		'bs', markersize=10)
 		pylab.plot([p[0] for p in self.negative],
 			[p[1]for p in self.negative],
-		'ro')
+		'rs', markersize=10)
 		#pylab.show()
 
 	def plotPositiveAlpha(self, alpha):
@@ -38,19 +38,19 @@ class TestClass:
 		pylab.hold(True)
 		pylab.plot([a[1][0] for a in alpha],
 			[a[1][1] for a in alpha],
-		'yo')
-		pylab.show()
+		'wx')
+		#pylab.show()
 			
-	def plotDecisionBoundary(self, indicator, kernel):
+	def plotDecisionBoundary(self, indicator, kernel, a):
 		x_range = numpy.arange(-4, 4, 0.05)
 		y_range = numpy.arange(-4, 4, 0.05)
-		grid = matrix([ [indicator(x, y, kernel)
+		grid = matrix([ [indicator(x, a, kernel)
 			for y in y_range]
 			for x in x_range])
 		pylab.contour(x_range, y_range, grid,
 			(-1.0, 0.0, 1.0),
-			colors=('red',' black', 'blue'),
-			leninewidths=(1,3,1))
+			colors=('red','black', 'blue'),
+			linewidths=(1,3,1) )
 		pylab.show()
 
 # Test when all positive/negative are above/below x-axis
@@ -100,8 +100,10 @@ def test2_linear():
 
 	return (positive, negative, classify())
 
-data = test1_linear()
-#svm.main(TestClass(data))
+# ONLY ONE TEST CAN BE RUNNED AT A TIME BECAUSE OF PLOTTING CHART ...
 
-data = test2_linear()
+data = test1_linear()
 svm.main(TestClass(data))
+
+#data = test2_linear()
+#svm.main(TestClass(data))
