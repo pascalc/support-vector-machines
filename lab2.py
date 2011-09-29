@@ -46,7 +46,7 @@ def linearKernel(x,y):
 
 def radialBasisKernel(x, y):
 	#Optimal solution (power to): 5, 3 (random.. but often generates boundary well)
-	sigma = 0.5
+	sigma = 64
 	def norm(x, y):
 		z = numpy.array(x) - numpy.array(y)
 		norm = numpy.linalg.norm(z)
@@ -56,6 +56,14 @@ def radialBasisKernel(x, y):
 	denominator = 2*math.pow(sigma, 2)
 	K = math.exp((-1)*(enumerator / denominator))
 
+	return K
+
+def sigmoidKernels(x, y):
+	k = 1
+	delta = 0.5
+	
+	linear = linearKernel(x, y) - 1
+	K = math.atan(k*linear - delta)
 	return K
 
 def buildP(raw_data, kernel_function):
