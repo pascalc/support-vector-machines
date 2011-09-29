@@ -6,7 +6,7 @@ import math, numpy
 import data
 
 THRESHOLD = math.pow(10, -5)
-DEBUG = 1
+DEBUG = 0
 
 def solveQP(P):
 	"INPUT is a matrix P with dim NxN"
@@ -44,10 +44,8 @@ def linearKernel(x,y):
 	return res[0]
 
 def radialBasisKernel(x, y):
-	#Deterine a good value for sigma
-	#http://en.wikipedia.org/wiki/Support_vector_machine#Properties
-	#http://en.wikipedia.org/wiki/Cross-validation_%28statistics%29
-	sigma = math.pow(2, 6)
+	#Optimal solution (power to): 5, 3 (random.. but often generates boundary well)
+	sigma = math.pow(2, 3)
 	def sub_vector(x, y):
 		z = matrix(x) - matrix(y)
 		return z[0]
