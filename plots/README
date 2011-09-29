@@ -1,0 +1,3 @@
+Blue - Positive data points. Indicator value >= 1
+Red - Negative data points. Indicator value <= -1
+Yellow - Support vector points, also know has alpha. These values corresponds to the points which optimize the quadratic problem
