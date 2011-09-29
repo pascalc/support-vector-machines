@@ -43,14 +43,15 @@ def linearKernel(x,y):
 	res = matrix(x).trans() * matrix(y) + 1
 	return res[0]
 
-def radialBasisKernel(x, y, sigma):
+def radialBasisKernel(x, y):
+	sigma = 10
 	def sub_vector(x, y):
 		z = matrix(x) - matrix(y)
 		return z[0]
 	
-	enumerator = math.pow(sub_vector(x, y))
+	enumerator = math.pow(sub_vector(x, y), 2)
 	denominator = math.pow(sigma, 2)
-	K = math.exp(enumerator / denumerator)
+	K = math.exp((-1)*(enumerator / denominator))
 
 	return K
 
@@ -78,7 +79,10 @@ def main(test):
 	data = test.getData()
 	classify = test.classify
 
-	P = buildP(data, linearKernel)
+	kernel = linearKernel
+	kernel = radialBasisKernel
+
+	P = buildP(data, kernel)
 
 	# Solve the quadractic problem
 	alpha = solveQP(P)
@@ -96,7 +100,7 @@ def main(test):
 	# Classify a new data point using the indicator function
 	classify_list = []
 	for p in classify:
-		classify_list += [(indicatorFunction(p, positive_alpha, linearKernel), p[0], p[1])]
+		classify_list += [(indicatorFunction(p, positive_alpha, kernel), p[0], p[1])]
 
 	correct_classified = filter(lambda x: x[0] > 0, classify_list)
 	debug("\nCorrect classified examples: " + str(correct_classified))
@@ -106,4 +110,4 @@ def main(test):
 
 	test.plotData()
 	test.plotPositiveAlpha(positive_alpha)
-	#test.plotDecisionBoundary(indicatorFunction, linearKernel)
+	#test.plotDecisionBoundary(indicatorFunction, kernel)
