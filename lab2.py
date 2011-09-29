@@ -22,7 +22,7 @@ def solveQP(P):
 	q = numpy.ones((N,1))*(-1)
 	h = numpy.zeros((N,1))
 	numpy.transpose(h)
-	G = -identity(N)
+	G = (-1)*identity(N)
 	
 	r = qp(matrix(P), matrix(q), matrix(G), matrix(h))
 	alpha = list(r['x'])
@@ -105,4 +105,5 @@ def main(test):
 	debug("\nIncorrect classified examples: " + str(incorrect_classified))
 
 	test.plotData()
+	test.plotPositiveAlpha(positive_alpha)
 	#test.plotDecisionBoundary(indicatorFunction, linearKernel)
