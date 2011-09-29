@@ -44,9 +44,10 @@ class TestClass:
 	def plotDecisionBoundary(self, indicator, kernel, a):
 		x_range = numpy.arange(-4, 4, 0.05)
 		y_range = numpy.arange(-4, 4, 0.05)
-		grid = matrix([ [indicator(x, a, kernel)
+		grid = matrix([ [indicator((x, y), a, kernel)
 			for y in y_range]
 			for x in x_range])
+		print grid
 		pylab.contour(x_range, y_range, grid,
 			(-1.0, 0.0, 1.0),
 			colors=('red','black', 'blue'),
@@ -54,8 +55,8 @@ class TestClass:
 		pylab.show()
 
 # Test when all positive/negative are above/below x-axis
-def test1_linear():
-	print "\n\t***** test1_linear *****\n"
+def test1():
+	print "\n\t***** test1 *****\n"
 	def classify():
 		"classification points"
 		v1_size = 20
@@ -66,23 +67,27 @@ def test1_linear():
 		return pos + neg
 
 	t1_size = 2
-	first_qudrant = [ (random.normalvariate(5, 4), random.normalvariate(4, 2), 1) for x in range(t1_size)]
-	second_quadrant = [ (random.normalvariate(-5, 4), random.normalvariate(4, 2), 1) for x in range(t1_size)]
+	first_qudrant = [ (random.normalvariate(3.5, 0.5), random.normalvariate(4, 0.2), 1) for x in range(t1_size)]
+	second_quadrant = [ (random.normalvariate(-3, 0.25), random.normalvariate(4, 0.9), 1) for x in range(t1_size)]
 	positive = first_qudrant + second_quadrant
 
-	third_qudrant = [ (random.normalvariate(5, 4), random.normalvariate(-4, 2), -1) for x in range(t1_size)]
-	fourth_qudrant = [ (random.normalvariate(-5, 4), random.normalvariate(-4, 2), -1) for x in range(t1_size)]
+	third_qudrant = [ (random.normalvariate(3, 0.5), random.normalvariate(-3, 0.5), -1) for x in range(t1_size)]
+	fourth_qudrant = [ (random.normalvariate(-3, 1), random.normalvariate(-3, 0.7), -1) for x in range(t1_size)]
 	negative = third_qudrant + fourth_qudrant
 
 	return (positive, negative, classify())
 
-def test2_linear():
+def test2():
 	print "\n\t***** test2_linear ***** \n"
 	
 	def classify():
-		v_size = 50
-
-		return [(5,1), (2, 2)]
+		classC = [ ( random.normalvariate(1.5,1) ,
+				  random.normalvariate(0.5,1))
+				for i in range(25) ] + \
+				[ ( random.normalvariate(1.5,1),
+					random.normalvariate(0.5,1))
+				for i in range(25)]
+		return classC
 	
 	positive = [ ( random.normalvariate(1.5,1) ,
 			  random.normalvariate(0.5,1),
@@ -102,8 +107,7 @@ def test2_linear():
 
 # ONLY ONE TEST CAN BE RUNNED AT A TIME BECAUSE OF PLOTTING CHART ...
 
-data = test1_linear()
-svm.main(TestClass(data))
+data = test1()
+#data = test2()
 
-#data = test2_linear()
-#svm.main(TestClass(data))
+svm.main(TestClass(data))

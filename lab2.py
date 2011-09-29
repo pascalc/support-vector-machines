@@ -43,14 +43,16 @@ def linearKernel(x,y):
 	res = matrix(x).trans() * matrix(y) + 1
 	return res[0]
 
+
 def radialBasisKernel(x, y):
 	#Optimal solution (power to): 5, 3 (random.. but often generates boundary well)
-	sigma = math.pow(2, 3)
-	def sub_vector(x, y):
-		z = matrix(x) - matrix(y)
-		return z[0]
-	
-	enumerator = math.pow(sub_vector(x, y), 2)
+	sigma = 0.5
+	def norm(x, y):
+		z = numpy.array(x) - numpy.array(y)
+		norm = numpy.linalg.norm(z)
+		return norm
+
+	enumerator = math.pow(norm(x,y), 2)
 	denominator = 2*math.pow(sigma, 2)
 	K = math.exp((-1)*(enumerator / denominator))
 
@@ -80,8 +82,8 @@ def main(test):
 	data = test.getData()
 	classify = test.classify
 
-	kernel = linearKernel
-	#kernel = radialBasisKernel
+	#kernel = linearKernel
+	kernel = radialBasisKernel
 
 	P = buildP(data, kernel)
 
@@ -93,7 +95,7 @@ def main(test):
 	data_alpha = zip(alpha, data) 
 	debug("\nAlpha values with corresponding points\n" + str(data_alpha))
 
-	# Sort out the positive using THRESHOLD
+	# Sort out the positive using TaHRESHOLD
 	positive_alpha = filter(lambda x: x[0] >= THRESHOLD, data_alpha)
 	debug("\nPositive alpha\n" + str(positive_alpha))
 
