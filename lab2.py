@@ -105,4 +105,4 @@ def main(test):
 	debug("\nIncorrect classified examples: " + str(incorrect_classified))
 
 	test.plotData()
-	#test.plotDecisionBoundary()
+	#test.plotDecisionBoundary(indicatorFunction, linearKernel)
